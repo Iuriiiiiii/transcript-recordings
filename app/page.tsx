@@ -37,24 +37,19 @@ export default function Home() {
     // try {
     //   controller.abort("Preventive abort.");
     // } catch {}
-    const body = {};
+    const body = new FormData();
+    body.append("content", files[0]);
+    body.append("eeee", "files[0]");
+    console.log("DEBUG ON page.tsx:42");
 
     const response = await fetch("http://localhost:3000/api/transcript", {
-      method: "GET",
+      method: "POST",
       headers: {},
+      body,
       signal: controller.signal,
     });
 
-    console.log("DEBUG ON page.tsx:47", { response });
-
-    // const response = await fetch("http://localhost:3000/", {
-    //   method: "POST",
-    //   headers: {},
-    //   body: JSON.stringify(body),
-    //   signal: controller.signal,
-    // });
-
-    // console.log("DEBUG ON page.tsx:47", { response });
+    console.log("DEBUG ON page.tsx:47", { response: await response.text() });
   }
 
   return (
