@@ -42,7 +42,9 @@ export default function Home() {
 
     const request = await fetch("http://localhost:3000/api/transcript", {
       method: "POST",
-      headers: {},
+      headers: {
+        authorization: process.env.AUTHORIZATION_KEY!,
+      },
       body,
     });
 
@@ -60,12 +62,13 @@ export default function Home() {
       if (!transcription) {
         throw new Error("Invalid transcription to translate.");
       }
-      
+
       const body = { transcript: transcription.transcript, language };
       const request = await fetch("http://localhost:3000/api/translate", {
         method: "POST",
         headers: {
           "content-type": "application/json",
+          authorization: process.env.AUTHORIZATION_KEY!,
         },
         body: JSON.stringify(body),
       });
