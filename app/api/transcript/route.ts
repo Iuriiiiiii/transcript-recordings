@@ -2,11 +2,10 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import "lostjs/common";
 import { SplitType } from "lostjs/common/src/enums";
+import { authenticate } from "../utils";
 
 export async function POST(req: Request) {
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_KEY,
-  });
+  authenticate(req);
 
   const form = await req.formData();
   if (!form.has("content")) {
@@ -24,6 +23,10 @@ export async function POST(req: Request) {
   if (file.constructor.name !== "File") {
     throw new Error("File expected on 'content' field.");
   }
+
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_KEY,
+  });
 
   const transcription = (await openai.audio.transcriptions.create({
     model: "whisper-1",

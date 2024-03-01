@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import "lostjs/common";
 import { SplitType } from "lostjs/common/src/enums";
+import { authenticate } from "../utils";
 
 interface ITranscriptionBody {
   transcript: [string, string, string][];
@@ -20,6 +21,8 @@ function isTranscriptionBody(body: unknown): body is ITranscriptionBody {
 }
 
 export async function POST(req: Request) {
+  authenticate(req);
+
   const body = await req.json();
 
   if (!isTranscriptionBody(body)) {
